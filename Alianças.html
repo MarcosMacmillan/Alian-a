@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculo de Alianças</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <style>
+        #zebrada tbody tr:nth-child(odd) {
+            background-color: rgb(201, 201, 201);
+        }
+    </style>
+</head>
+<body style="background-color: rgb(255, 255, 255);">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <!-- alerta de campo vazio -->
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header bg-warning">
+            <strong class="me-auto text-black">Atenção</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div id="message" class="toast-body" style="white-space: pre-wrap;">
+          </div>
+        </div>
+    </div>
+
+    <h1 class="text-center " style="margin-top: 80px;">Alianças</h1>
+    <div class="container w-50 fw-bold" style="margin-top: 30px; border: 1px solid rgb(0, 0, 0); border-radius: 4px; padding: 30px;">
+        <div class="row">
+            <h5 class="text-center">Digite as informações abaixo</h5>
+            <div class="col"  style="margin-top: 20px;">
+                <label for="primeira">Número da  Primeira Aliança</label>
+                <input id="primeira" type="text" class="form-control" placeholder="Número da Primeira Aliança" required>
+            </div>
+
+            <div class="col"  style="margin-top: 20px;">
+                <label for="segunda">Número da  Segunda Aliança</label>
+                <input id="segunda" type="number" class="form-control" placeholder="Número da  Segunda Aliança">
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+            <div class="col">
+                <label for="mm">MM da(s) Aliança(s)</label>
+                <input id="mm" type="text" class="form-control" placeholder="MM" required>
+            </div>
+            
+            <div class="col">
+                <label for="peso" >Peso da(s) Aliança(s)</label>
+                <input id="peso" type="text" class="form-control" placeholder="Peso" required>
+            </div>
+            
+            <div class="col">
+                <label for="Ouro">Ouro</label>
+                <select class="form-select" id="ouro" required>
+                    <option value="" selected disabled>Tipo do Ouro</option>
+                    <option value="1">18K</option>
+                    <option value="2">16K</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+            <div class="col">
+                <button type="text" class="form-control btn btn-primary"  data-bs-target="#modalCalculo" onclick="calcular()">Calcular
+            </div>
+            <div class="col">
+                <button type="button" class="form-control btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalPrata" onclick="preenchePrata()">Tabela de Pratas
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal de Prata -->
+    <div class="modal fade modal-lg" id="modalPrata" tabindex="-1" aria-labelledby="modalPrataLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-4 w-100 text-center" id="modalPrataLabel">Tabela de Pratas</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="zebrada" class="table">
+                    <thead>
+                    <tr style="border: 1px solid;">
+                        <th scope="col" style="text-align: center">Número</th>
+                        <th scope="col" style="text-align: center">Peso</th>
+                        <th scope="col" style="text-align: center">Conquilha</th>
+                    </tr>
+                    </thead>
+                    <tbody id="TabelaDePratas">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cálculo -->
+    <div class="modal fade modal-lg" id="modalCalculo" tabindex="-1" aria-labelledby="modalCalculo" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-4 w-100 text-center" id="modalCalculo">Tabela de Pratas</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="zebrada" class="table">
+                    <thead>
+                    <tr style="border: 1px solid;">
+                        <th scope="col" style="text-align: center">Número</th>
+                        <th scope="col" style="text-align: center">Ouro Necessário</th>
+                        <th scope="col" style="text-align: center">Conquilha</th>
+                    </tr>
+                    </thead>
+                    <tbody id="TabelaCalculo">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+</body>
+
+<script>
+    function preenchePrata(){
+        let pesos = [10,11,12,12,12.5,12,11.5,12,13.5,13,14,13.5,12.5,13.5,14.5,14,15,14.5,14,15.5,14,13];
+        let conquilhas = [19.2,19.8,20.5,20.5,21.2,21.2,21.2,21.8,22.5,22.5,23.2,23.2,23.2,23.8,24.5,24.5,25.2,25.2,25.2,25.8,25.8,25.8];
+        let tamanho = 10;
+        let tabela = document.getElementById("TabelaDePratas");
+        for(let i = 0 ; i < pesos.length ; i++){
+            tabela.innerHTML += 
+            `
+            <tr style="border: 1px solid;">
+                <th scope="row" style="text-align: center">${tamanho}</th>
+                <td style="text-align: center">${pesos[i]}GR</td>
+                <td style="text-align: center">${conquilhas[i]}</td>
+            </tr>
+            `
+            tamanho++;
+        }
+    }
+
+
+    function calcular() {
+        let primeira = document.querySelector("#primeira").value;
+        let segunda = document.querySelector("#segunda").value;
+        let mm = document.querySelector("#mm").value;
+        let peso = document.querySelector("#peso").value;
+        let ouro = document.querySelector("#ouro").value;
+        let alturaInicial = 0.5;
+        let pos = 0;
+        let certo = 0;
+        densidade = ouro == 1 ? 15.55 : 13; //15.55 Ouro 18k, 13 Ouro 16k
+
+        // Variável que controla o número da aliança em MM //
+        let numeroCentimetro = [11.5, 11.8, 12.2, 12.5, 12.8, 13.2, 13.5, 13.8, 14.2, 14.5, 14.8, 15.2, 15.5, 15.8, 16.2, 16.5,
+        16.8, 17.2, 17.5, 17.8, 18.2, 18.5, 18.8, 19.2, 19.5, 19.8, 20.2, 20.5, 20.8, 21.2, 21.5, 21.8, 22.2, 22.5, 22.8,
+        23.2, 23.5, 23.8, 24.2, 24.5, 24.8];
+
+        let conqExistentes = [17.8, 18.5, 19.2, 19.8, 20.5, 21.2, 21.8, 22.5, 23.2, 23.8, 24.5, 25.2, 25.8, 27.4];
+
+
+
+        if(primeira == '' || mm == '' || peso == '' || ouro == ''){
+            return campoVazio();
+        }
+        
+
+        if(segunda == ''){ // fazer apenas 1
+            pesoFinal = numeroCentimetro[primeira] * Math.PI * mm * alturaInicial / 1000 * densidade;
+            if(pesoFinal < peso){
+                while(pesoFinal < peso){
+                    alturaInicial += 0.05;
+                    pesoFinal = numeroCentimetro[primeira] * Math.PI * mm * alturaInicial / 1000 * densidade;
+                }
+            }
+
+            total = ( (numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial) * 2 + numeroCentimetro[primeira];
+
+            if( total - conqExistentes[pos] < 0.01){
+                conquilhaFinal = [conqExistentes[pos]];
+                raio = ( (numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial) + numeroCentimetro[primeira];
+                calculo = raio * Math.PI * 8 * (numeroCentimetro[primeira] - numeroCentimetro[primeira-2] + alturaInicial) / 1000 * densidade; // * 8 porque só tem conquilhas de 8mm
+                pesoTotalConquilha = [calculo];
+
+            } else{
+                while(pos < conqExistentes.length){
+                    if( total - conqExistentes[pos] < 0.01 ){
+                        conquilhaFinal = [conqExistentes[pos]];
+                        raio = ( (numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial) + numeroCentimetro[primeira];
+                        calculo = raio * Math.PI * 8 * (numeroCentimetro[primeira] - numeroCentimetro[primeira-2] + alturaInicial) / 1000 * densidade; // * 8 porque só tem conquilhas de 8mm
+                        pesoTotalConquilha = [calculo];
+
+                        break;
+                    }
+                    pos++;
+                }
+            }
+
+            //caso não encontre do jeito que ta, modificando pra conquilha maior
+
+            pos = 0;
+            while(total > conqExistentes[pos]){
+                pos++;
+            }
+
+            novo = (conqExistentes[pos] - total) / 2;
+            alturaInicial += novo;
+            total = ( (numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial) * 2 + numeroCentimetro[primeira];
+            raio = ( (numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial) + numeroCentimetro[primeira];
+            calculo = raio * Math.PI * 8 * (numeroCentimetro[primeira] - numeroCentimetro[primeira-2] + alturaInicial) / 1000 * densidade;
+            conquilhaFinal = [total];
+            pesoTotalConquilha = [(calculo + 0.5)];
+
+            aliancas = [primeira];
+        }
+        else{ //fazer o par
+
+            pesoAlianca = numeroCentimetro[primeira] * Math.PI * mm * alturaInicial / 1000 * densidade;
+            pesoAlianca2 = numeroCentimetro[segunda] * Math.PI * mm * alturaInicial / 1000 * densidade;
+
+            if(pesoAlianca + pesoAlianca2 < peso){
+                while(pesoAlianca + pesoAlianca2 < peso){
+                    alturaInicial += 0.05;
+                    alturaInicial2 = alturaInicial;
+                    pesoAlianca = numeroCentimetro[primeira] * Math.PI * mm * alturaInicial / 1000 * densidade;
+                    pesoAlianca2 = numeroCentimetro[segunda] * Math.PI * mm * alturaInicial / 1000 * densidade;
+                }
+            }
+            pesoFinalAliança1 = pesoAlianca;
+            pesoFinalAliança2 = pesoAlianca2;
+
+
+            //primeira aliança
+            total = ( (numeroCentimetro[primeira] - numeroCentimetro[primeira-2] ) + alturaInicial)* 2 + numeroCentimetro[primeira];
+            
+
+                if( total - conqExistentes[pos] < 0.01 ){
+                    conquilhaFinal = [conqExistentes[pos]];
+                    raio = ((numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial) + numeroCentimetro[primeira];
+                    calculo = raio * Math.PI * 8 * (numeroCentimetro[primeira] - numeroCentimetro[primeira-2] + alturaInicial) / 1000 * densidade;
+                    pesoTotalConquilha = [(calculo + 0.5)]
+                    certo++;
+                }
+                else {
+                    while(pos < conqExistentes.length){
+                        if( total - conqExistentes[pos] < 0.01){
+                            conquilhaFinal = [conqExistentes[pos]];
+                            raio =  ((numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial) + numeroCentimetro[primeira];
+                            calculo = raio * Math.PI * 8 * (numeroCentimetro[primeira] - numeroCentimetro[primeira-2] + alturaInicial) / 1000 * densidade;
+                            pesoTotalConquilha = [(calculo + 0.5)]
+                            certo++;
+                            break;
+                        }
+                        pos++;
+                    }
+                }     
+                
+                if(certo == 0){
+                    //caso não encontre do jeito que ta, modificando pra conquilha maior
+                    pos = 0;
+                    while(total > conqExistentes[pos]){
+                        pos++;
+                    }
+                    novo = (conqExistentes[pos] - total) / 2;
+                    alturaInicial += novo;
+                    total = ((numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial)* 2 + numeroCentimetro[primeira];
+                    conquilhaFinal = [total];
+                    raio = ( (numeroCentimetro[primeira] - numeroCentimetro[primeira-2]) + alturaInicial) + numeroCentimetro[primeira];
+                    calculo = raio * Math.PI * 8 * (numeroCentimetro[primeira] - numeroCentimetro[primeira-2] + alturaInicial) / 1000 * densidade;
+                    pesoTotalConquilha = [(calculo + 0.5)]
+                }
+
+                //segunda aliança
+                pos = 0;
+                certo = 0;
+                total2 = (numeroCentimetro[segunda] - numeroCentimetro[segunda-2] + alturaInicial2) * 2 + numeroCentimetro[segunda];
+
+                if( total2 - conqExistentes[pos] < 0.01){ // caso ache a conquilha de primeira
+                    conquilhaFinal.push(conqExistentes[pos]);
+                    raio = ( (numeroCentimetro[segunda] - numeroCentimetro[segunda-2]) + alturaInicial2) + numeroCentimetro[segunda];
+                    calculo = raio * Math.PI * 8 * (numeroCentimetro[segunda] - numeroCentimetro[segunda-2] + alturaInicial2) / 1000 * densidade;
+                    pesoTotalConquilha.push((calculo + 0.5))
+                    certo++;
+                }
+                else { // caso não ache, pula para a próxima
+                    while(pos < conqExistentes.length){
+                        if( total2 - conqExistentes[pos] < 0.01){
+                            conquilhaFinal.push(conqExistentes[pos]);
+                            raio = ( (numeroCentimetro[segunda] - numeroCentimetro[segunda-2]) + alturaInicial2) + numeroCentimetro[segunda];
+                            calculo = raio * Math.PI * 8 * (numeroCentimetro[segunda] - numeroCentimetro[segunda-2] + alturaInicial2) / 1000 * densidade;
+                            pesoTotalConquilha.push((calculo + 0.5))
+                            certo++;
+                            break;
+                        }
+                        pos++;
+                    }
+                }     
+                
+                if(certo == 0){
+                    //caso não encontre do jeito que ta, modificando pra conquilha maior
+                    pos = 0;
+                    while(total2 > conqExistentes[pos]){
+                        pos++;
+                    }
+                    novo = (conqExistentes[pos] - total2) / 2;
+                    alturaInicial2 += novo;
+                    total2 = ((numeroCentimetro[segunda] - numeroCentimetro[segunda-2]) + alturaInicial2)* 2 + numeroCentimetro[segunda];
+                    conquilhaFinal.push(total2);
+                    raio = ( (numeroCentimetro[segunda] - numeroCentimetro[segunda-2]) + alturaInicial2) + numeroCentimetro[segunda];
+                    calculo = raio * Math.PI * 8 * (numeroCentimetro[segunda] - numeroCentimetro[segunda-2] + alturaInicial2) / 1000 * densidade;
+                    pesoTotalConquilha.push((calculo + 0.5))
+                }
+                aliancas = [primeira, segunda];
+        }
+
+        //abrir modal e colocar as informações
+        const modal = new bootstrap.Modal(document.getElementById('modalCalculo'))
+        modal.show()
+
+        let tabela = document.getElementById("TabelaCalculo");
+        tabela.innerHTML = '';
+        for(let i = 0 ; i < conquilhaFinal.length ; i++){
+            tabela.innerHTML += 
+            `
+            <tr style="border: 1px solid;">
+                <th scope="row" style="text-align: center">${aliancas[i]}</th>
+                <td style="text-align: center">${pesoTotalConquilha[i].toFixed(2)}GR</td>
+                <td style="text-align: center">${conquilhaFinal[i].toFixed(2)}</td>
+            </tr>
+            `
+        }
+    }
+
+    function campoVazio(){
+        let primeira = document.querySelector("#primeira").value;
+        let mm = document.querySelector("#mm").value;
+        let peso = document.querySelector("#peso").value;
+        let ouro = document.querySelector("#ouro").value;
+        let messageDocument = document.querySelector("#message");
+
+
+        let message = `Campos vazios:` + "\n\n";
+
+        if(primeira == '') message += "Primeira Aliança" + "\n";
+        if(mm == '') message += "MM da(s) Aliança(s)" + "\n";
+        if(peso == '') message += "Peso da(s) Aliança(s)" + "\n";
+        if(ouro == '') message += "Ouro" + "\n";
+
+        messageDocument.innerHTML = message;
+        const toast = new bootstrap.Toast(document.getElementById('liveToast'))
+        toast.show()
+
+    }
+</script>
+</html>
