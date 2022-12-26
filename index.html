@@ -118,6 +118,7 @@
                         <th scope="col" style="text-align: center">Número</th>
                         <th scope="col" style="text-align: center">Ouro Necessário</th>
                         <th scope="col" style="text-align: center">Conquilha</th>
+                        <th scope="col" style="text-align: center">Peso Final estimado</th>
                     </tr>
                     </thead>
                     <tbody id="TabelaCalculo">
@@ -226,6 +227,7 @@
             pesoTotalConquilha = [(calculo + 0.5)];
 
             aliancas = [primeira];
+            pesoFinalEstimado = [pesoFinal];
         }
         else{ //fazer o par
 
@@ -242,6 +244,7 @@
             }
             pesoFinalAliança1 = pesoAlianca;
             pesoFinalAliança2 = pesoAlianca2;
+            pesoFinalEstimado = [pesoFinalAliança1, pesoFinalAliança2];
 
 
             //primeira aliança
@@ -340,6 +343,7 @@
                 <th scope="row" style="text-align: center">${aliancas[i]}</th>
                 <td style="text-align: center">${pesoTotalConquilha[i].toFixed(2)}GR</td>
                 <td style="text-align: center">${conquilhaFinal[i].toFixed(2)}</td>
+                <td style="text-align: center">${pesoFinalEstimado[i].toFixed(2)}</td>
             </tr>
             `
         }
